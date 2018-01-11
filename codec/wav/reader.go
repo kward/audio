@@ -5,8 +5,8 @@ import (
 	"io"
 	"time"
 
-	"github.com/loov/audio"
-	"github.com/loov/audio/slice"
+	"github.com/kward/goaudio"
+	"github.com/kward/goaudio/slice"
 )
 
 const splitBufferSize = 1 << 10

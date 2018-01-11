@@ -1,8 +1,8 @@
 package bufferutil
 
 import (
-	"github.com/loov/audio"
-	"github.com/loov/audio/slice"
+	"github.com/kward/goaudio"
+	"github.com/kward/goaudio/slice"
 )
 
 func Zero(buf audio.Buffer) {

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/loov/audio/codec/wav/wavdata"
+	"github.com/kward/goaudio/codec/wav/encodings"
 )
 
 func hex2bytes(data string) []byte {
@@ -36,7 +36,7 @@ var ExampleDataShort = hex2bytes(`
 	66 6d 74 20 10 00 00 00
 		01 00 02 00 22 56 00 00 88 58 01 00 04 00 10 00
 	64 61 74 61 00 08 00 00
-		00 00 00 00	24 17 1e f3 3c 13 3c 14 16 f9 18 f9 34 e7 23 a6 3c f2 24 f2 11 ce 1a 0d 
+		00 00 00 00	24 17 1e f3 3c 13 3c 14 16 f9 18 f9 34 e7 23 a6 3c f2 24 f2 11 ce 1a 0d
 `)
 
 func TestBytesReader(t *testing.T) {
@@ -55,7 +55,7 @@ func TestBytesReader(t *testing.T) {
 	fmt := format{
 		ChunkID:       [4]byte{'f', 'm', 't', ' '},
 		ChunkSize:     16,
-		Encoding:      wavdata.PCM,
+		Encoding:      encodings.PCM,
 		NumChannels:   2,
 		SampleRate:    22050,
 		ByteRate:      88200,

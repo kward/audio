@@ -1,6 +1,6 @@
 package slice
 
-import "github.com/loov/audio"
+import "github.com/kward/goaudio"
 
 func Zero64(data []float64) {
 	for i := range data {

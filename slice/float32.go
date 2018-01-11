@@ -1,6 +1,6 @@
 package slice
 
-import "github.com/loov/audio"
+import "github.com/kward/goaudio"
 
 func Zero32(data []float32) {
 	for i := range data {

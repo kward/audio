@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/loov/audio/codec/wav/encodings"
+	"github.com/kward/goaudio/codec/wav/encodings"
 )
 
 type CodecFormat struct {

@@ -1,7 +1,7 @@
 package generate
 
 import (
-	"github.com/loov/audio"
+	"github.com/kward/goaudio"
 )
 
 func MonoF64(out audio.Buffer, sample func() float64) error {

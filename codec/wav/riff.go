@@ -6,7 +6,7 @@ http://soundfile.sapp.org/doc/WaveFormat/
 package wav
 
 import (
-	"github.com/loov/audio/codec/wav/encodings"
+	"github.com/kward/goaudio/codec/wav/encodings"
 )
 
 func findSubChunk(data []byte, target [4]byte) []byte {
