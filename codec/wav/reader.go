@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/loov/audio"
-	"github.com/loov/audio/codec/wav/wavdata"
 	"github.com/loov/audio/slice"
 )
 
@@ -42,6 +41,12 @@ func (reader *Reader) Clone() *Reader {
 	return clone
 }
 
+func (reader *Reader) BitsPerSample() int {
+	if reader.format.ExBitsPerSample > 0 {
+		return int(reader.format.ExBitsPerSample)
+	}
+	return int(reader.format.BitsPerSample)
+}
 func (reader *Reader) FrameCount() int { return len(reader.data.Data) / int(reader.format.BlockAlign) }
 func (reader *Reader) SampleRate() int { return int(reader.format.SampleRate) }
 
@@ -49,7 +54,7 @@ func (reader *Reader) Duration() time.Duration {
 	return audio.FrameCountToDuration(reader.FrameCount(), reader.SampleRate())
 }
 
-func (reader *Reader) Seek(offset time.Duration, whence int) (time.Duration, error) {
+func (reader *Reader) Seek(offset time.Duration) (time.Duration, error) {
 	offsetFrames := audio.DurationToFrameCount(offset, reader.SampleRate())
 	reader.head = offsetFrames * int(reader.format.BlockAlign)
 	return reader.Position(), nil
@@ -64,10 +69,6 @@ func (reader *Reader) ChannelCount() int {
 	return int(reader.format.NumChannels)
 }
 
-func (reader *Reader) framesLeft() int {
-	return (len(reader.data.Data) - reader.head) / int(reader.format.BlockAlign)
-}
-
 func (reader *Reader) ReadBlock(block []float32) (frameCount int) {
 	if reader.framesLeft() == 0 {
 		return 0
@@ -79,14 +80,12 @@ func (reader *Reader) ReadBlock(block []float32) (frameCount int) {
 	}
 	maxSamples := maxFrames * reader.ChannelCount()
 
-	codec, ok := wavdata.Codecs[wavdata.Format{
-		reader.format.Encoding,
-		reader.format.BitsPerSample,
-	}]
-
+	format := CodecFormat{reader.format.Encoding, reader.format.BitsPerSample}
+	codec, ok := Codecs[format]
 	if !ok {
-		panic(fmt.Sprintf("unsupported codec %v", codec))
+		panic(fmt.Sprintf("unsupported codec format %v", format))
 	}
+
 	reader.head += codec.ReadF32(reader.data.Data[reader.head:], block, maxSamples)
 	return maxFrames
 }
@@ -116,4 +115,8 @@ func (reader *Reader) Read(buf audio.Buffer) (int, error) {
 		return totalFrameCount, io.EOF
 	}
 	return totalFrameCount, nil
+}
+
+func (reader *Reader) framesLeft() int {
+	return (len(reader.data.Data) - reader.head) / int(reader.format.BlockAlign)
 }
