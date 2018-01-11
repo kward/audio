@@ -1,3 +1,1 @@
-# loov/audio
-
-*EXPERIMENTAL: DO NOT USE IN PRODUCTION*
+# kward/goaudio
